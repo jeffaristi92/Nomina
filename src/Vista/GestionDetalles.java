@@ -5,6 +5,13 @@
  */
 package Vista;
 
+import Controlador.ControladorDetalle;
+import Controlador.DataBaseFactory;
+import Modelo.Detalle;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author yefguaar
@@ -14,8 +21,55 @@ public class GestionDetalles extends javax.swing.JPanel {
     /**
      * Creates new form GestionDetalles
      */
-    public GestionDetalles() {
+    ControladorDetalle controladorDetalle;
+    
+    public GestionDetalles(DataBaseFactory f) {
+        controladorDetalle = new ControladorDetalle(f.getDataBase());
         initComponents();
+        actualizarTabla();
+    }
+    
+    Detalle getDatos() {
+        Detalle d = new Detalle();
+        d.Tipo = jcbTipoDetalle.getSelectedItem().toString();
+        d.Nombre = jtfNombre.getText();
+        d.Descripcion = jtfDescripcion.getText();
+        return d;
+    }
+    
+    private void setDatos(Detalle d) {
+        jcbTipoDetalle.setSelectedItem(d.Tipo);
+        jtfNombre.setText(d.Nombre);
+        jtfDescripcion.setText(d.Descripcion);
+    }
+    
+    void actualizarTabla() {
+        List<Detalle> lstDetalles = controladorDetalle.listarDetalles();
+        DefaultTableModel modelo = (DefaultTableModel) jtbDetalle.getModel();
+        
+        int nroFIlas = modelo.getRowCount();
+        for (int i = 0; i < nroFIlas; i++) {
+            modelo.removeRow(0);
+        }
+        
+        if (lstDetalles.size() > 0) {
+            for (Detalle d : lstDetalles) {
+                
+                Object[] fila;
+                fila = new Object[]{
+                    d.Nombre,
+                    d.Descripcion,
+                    d.Tipo
+                };
+                modelo.addRow(fila);
+            }
+        }
+        jtbDetalle.setModel(modelo);
+    }
+    
+    void limpiarFormulario() {
+        jtfNombre.setText("");
+        jtfDescripcion.setText("");
     }
 
     /**
@@ -28,19 +82,19 @@ public class GestionDetalles extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jtbDetalle = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jtfNombre = new javax.swing.JTextField();
+        jtfDescripcion = new javax.swing.JTextField();
+        jcbTipoDetalle = new javax.swing.JComboBox();
+        jbtLimpiar = new javax.swing.JButton();
+        jbtActualizar = new javax.swing.JButton();
+        jbtRegistrar = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jtbDetalle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -56,7 +110,12 @@ public class GestionDetalles extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jtbDetalle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtbDetalleMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jtbDetalle);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Gestion Detalle");
@@ -67,13 +126,28 @@ public class GestionDetalles extends javax.swing.JPanel {
 
         jLabel4.setText("Descripcion");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Devengado", "Deduccion" }));
+        jcbTipoDetalle.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Devengado", "Deduccion" }));
 
-        jButton2.setText("Actualizar");
+        jbtLimpiar.setText("Limpiar");
+        jbtLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtLimpiarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Actualizar");
+        jbtActualizar.setText("Actualizar");
+        jbtActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtActualizarActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Registrar");
+        jbtRegistrar.setText("Registrar");
+        jbtRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtRegistrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -89,28 +163,25 @@ public class GestionDetalles extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2))
+                        .addComponent(jtfDescripcion))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2))
                         .addGap(35, 35, 35)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
+                            .addComponent(jtfNombre)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jcbTipoDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(jbtLimpiar)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4)))
+                        .addComponent(jbtRegistrar)))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(311, 311, 311)
-                    .addComponent(jButton2)
-                    .addContainerGap(398, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,43 +191,75 @@ public class GestionDetalles extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jcbTipoDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
+                    .addComponent(jbtRegistrar)
+                    .addComponent(jbtActualizar)
+                    .addComponent(jbtLimpiar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(225, 225, 225)
-                    .addComponent(jButton2)
-                    .addContainerGap(226, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jbtRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtRegistrarActionPerformed
+        // TODO add your handling code here:
+        if (controladorDetalle.insertarDetalle(getDatos())) {
+            JOptionPane.showMessageDialog(this, "Detalle registrado", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormulario();
+            actualizarTabla();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo registrar Detalle", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtRegistrarActionPerformed
+
+    private void jbtActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtActualizarActionPerformed
+        // TODO add your handling code here:
+        if (controladorDetalle.actualizarDetalle(getDatos())) {
+            JOptionPane.showMessageDialog(this, "Detalle actualizado", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            actualizarTabla();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar Detalle", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtActualizarActionPerformed
+
+    private void jtbDetalleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbDetalleMouseClicked
+        // TODO add your handling code here:
+        Detalle d = new Detalle();
+        d.Nombre = jtbDetalle.getValueAt(jtbDetalle.getSelectedRow(), 0).toString();
+        d.Descripcion = jtbDetalle.getValueAt(jtbDetalle.getSelectedRow(), 1).toString();
+        d.Tipo = jtbDetalle.getValueAt(jtbDetalle.getSelectedRow(), 2).toString();
+
+        setDatos(d);
+    }//GEN-LAST:event_jtbDetalleMouseClicked
+
+    private void jbtLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLimpiarActionPerformed
+        // TODO add your handling code here:
+        limpiarFormulario();
+    }//GEN-LAST:event_jbtLimpiarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton jbtActualizar;
+    private javax.swing.JButton jbtLimpiar;
+    private javax.swing.JButton jbtRegistrar;
+    private javax.swing.JComboBox jcbTipoDetalle;
+    private javax.swing.JTable jtbDetalle;
+    private javax.swing.JTextField jtfDescripcion;
+    private javax.swing.JTextField jtfNombre;
     // End of variables declaration//GEN-END:variables
 }

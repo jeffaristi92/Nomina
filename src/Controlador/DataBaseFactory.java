@@ -16,7 +16,7 @@ public class DataBaseFactory {
     DataBase baseDatos;
 
     public DataBaseFactory() {
-        baseDatos = new DataBase("D:\\BDNomina");
+        baseDatos = new DataBase("C:\\BDNomina");
         baseDatos.cargarDaTaBase();
     }
 

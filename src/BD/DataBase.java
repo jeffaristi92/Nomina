@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 /**
  *
@@ -77,7 +74,17 @@ public class DataBase {
         escribirArchivo(Directorio + "\\Empleado.txt", Empleado);
         return true;
     }
+    
+    public boolean actualizarEmpresa() {
+        escribirArchivo(Directorio + "\\Empresa.txt", Empresa);
+        return true;
+    }
 
+    public boolean actualizarDetalle() {
+        escribirArchivo(Directorio + "\\Detalle.txt", Detalle);
+        return true;
+    }
+    
     String concatenarFila(String[] fila) {
         String linea = "";
         for (int i = 0; i < fila.length; i++) {

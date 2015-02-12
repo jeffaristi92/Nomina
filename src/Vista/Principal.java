@@ -5,10 +5,10 @@
  */
 package Vista;
 
-import BD.DataBase;
 import Controlador.DataBaseFactory;
 import Modelo.Empresa;
 import java.awt.Component;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +21,7 @@ public class Principal extends javax.swing.JFrame {
      */
     DataBaseFactory factory;
     Empresa empresa;
-    
+
     public Principal(DataBaseFactory f) {
         factory = f;
         loadEmpresa();
@@ -29,14 +29,23 @@ public class Principal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
     }
-    
-    void loadEmpresa(){
+
+    void loadEmpresa() {
+
+        if (factory.getDataBase().Empresa.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe crear una empresa", "Alera", JOptionPane.WARNING_MESSAGE);
+            String nit = JOptionPane.showInputDialog(null, "Ingrese el NIT de la empresa", "NIT", JOptionPane.INFORMATION_MESSAGE);
+            String nombre = JOptionPane.showInputDialog(null, "Ingrese el NOMBRE de la empresa", "NOMBRE", JOptionPane.INFORMATION_MESSAGE);
+            factory.getDataBase().Empresa.add(new String[]{nit, nombre});
+            factory.getDataBase().actualizarEmpresa();
+        }
+
         String[] fila = factory.getDataBase().Empresa.get(0);
         empresa = new Empresa();
         empresa.Nit = fila[0];
         empresa.Nombre = fila[1];
     }
-    
+
     public void limpiar() {
         jpnContenido.removeAll();
         repaint();
@@ -63,6 +72,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jmiGestionEmpleado = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,6 +96,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jmiGestionEmpleado);
+
+        jMenuItem1.setText("Detalle");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
 
@@ -118,9 +136,16 @@ public class Principal extends javax.swing.JFrame {
         setComponente(ge);
     }//GEN-LAST:event_jmiGestionEmpleadoActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        GestionDetalles gd = new GestionDetalles(factory);
+        setComponente(gd);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jmiGestionEmpleado;
     private javax.swing.JPanel jpnContenido;
     // End of variables declaration//GEN-END:variables

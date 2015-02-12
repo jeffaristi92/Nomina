@@ -22,12 +22,14 @@ public class DataBase {
     public ArrayList<String[]> Empresa;
     public ArrayList<String[]> Empleado;
     public ArrayList<String[]> Detalle;
+    public ArrayList<String[]> DetalleFijo;
 
     public DataBase(String directorio) {
         Directorio = directorio;
         Empresa = new ArrayList<>();
         Empleado = new ArrayList<>();
         Detalle = new ArrayList<>();
+        DetalleFijo = new ArrayList<>();
     }
 
     public void cargarDaTaBase() {
@@ -38,6 +40,7 @@ public class DataBase {
         cargarEmpresa();
         cargarEmpleado();
         cargarDetalle();
+        cargarDetalleFijo();
     }
 
     boolean cargarEmpresa() {
@@ -69,6 +72,16 @@ public class DataBase {
         }
         return true;
     }
+    
+    boolean cargarDetalleFijo() {
+        ArrayList<String> contenidoArchivo = leerArchivo(Directorio + "\\DetalleFijo.txt");
+        for (String linea : contenidoArchivo) {
+            if (!linea.isEmpty()) {
+                DetalleFijo.add(linea.split("\\|"));
+            }
+        }
+        return true;
+    }
 
     public boolean actualizarEmpleado() {
         escribirArchivo(Directorio + "\\Empleado.txt", Empleado);
@@ -82,6 +95,11 @@ public class DataBase {
 
     public boolean actualizarDetalle() {
         escribirArchivo(Directorio + "\\Detalle.txt", Detalle);
+        return true;
+    }
+    
+    public boolean actualizarDetalleFijo() {
+        escribirArchivo(Directorio + "\\DetalleFijo.txt", DetalleFijo);
         return true;
     }
     

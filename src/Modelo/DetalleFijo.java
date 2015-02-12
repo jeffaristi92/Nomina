@@ -7,10 +7,11 @@ package Modelo;
 
 /**
  *
- * @author ARISTIZABAL
+ * @author yefguaar
  */
-public class ItemFijo {
+public class DetalleFijo {
+    public String IdDetalleFijo;
     public String Empleado;
-    public String Detalle;
-    public boolean Valor;
+    public String Nombre;
+    public double ValorUnitario;
 }

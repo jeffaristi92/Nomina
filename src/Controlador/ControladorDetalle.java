@@ -7,7 +7,6 @@ package Controlador;
 
 import BD.DataBase;
 import Modelo.Detalle;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

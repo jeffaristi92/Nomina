@@ -10,6 +10,6 @@ package Modelo;
  * @author ARISTIZABAL
  */
 public class Empresa {
-    public String Nombre;
     public String Nit;
+    public String Nombre;
 }

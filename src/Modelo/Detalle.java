@@ -9,8 +9,9 @@ package Modelo;
  *
  * @author ARISTIZABAL
  */
-public class Item {
-    public String Detalle;
-    public int Cantidad;
-    public double Valor;
+public class Detalle {
+    public enum TipoItem {Devengado, Deduccion};
+    public int Tipo;
+    public String Nombre;
+    public String Descripcion;
 }

@@ -9,8 +9,8 @@ package Modelo;
  *
  * @author ARISTIZABAL
  */
-public class Item {
+public class ItemFijo {
+    public String Empleado;
     public String Detalle;
-    public int Cantidad;
-    public double Valor;
+    public boolean Valor;
 }

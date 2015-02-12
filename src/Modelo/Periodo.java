@@ -9,8 +9,6 @@ package Modelo;
  *
  * @author ARISTIZABAL
  */
-public class Item {
-    public String Detalle;
-    public int Cantidad;
-    public double Valor;
+public class Periodo {
+    
 }

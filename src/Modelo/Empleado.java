@@ -10,13 +10,14 @@ package Modelo;
  * @author ARISTIZABAL
  */
 public class Empleado {
+    public String Empresa;
+    public String Identificacion;
     public String Nombre;
     public String Apellido;
-    public String Identificacion;
     public String Cargo;
     public double SalarioBasico;
-    public String Banco;
-    public String Cuenta;
     public String Pension;
     public String Salud;
+    public String Banco;
+    public String Cuenta;
 }

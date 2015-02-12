@@ -23,6 +23,7 @@ public class DataBase {
     public ArrayList<String[]> Empleado;
     public ArrayList<String[]> Detalle;
     public ArrayList<String[]> DetalleFijo;
+    public ArrayList<String[]> Periodo;
 
     public DataBase(String directorio) {
         Directorio = directorio;
@@ -30,6 +31,7 @@ public class DataBase {
         Empleado = new ArrayList<>();
         Detalle = new ArrayList<>();
         DetalleFijo = new ArrayList<>();
+        Periodo = new ArrayList<>();
     }
 
     public void cargarDaTaBase() {
@@ -41,6 +43,17 @@ public class DataBase {
         cargarEmpleado();
         cargarDetalle();
         cargarDetalleFijo();
+        cargarPeriodo();
+    }
+
+    boolean cargarPeriodo() {
+        ArrayList<String> contenidoArchivo = leerArchivo(Directorio + "\\Periodo.txt");
+        for (String linea : contenidoArchivo) {
+            if (!linea.isEmpty()) {
+                Periodo.add(linea.split("\\|"));
+            }
+        }
+        return true;
     }
 
     boolean cargarEmpresa() {
@@ -72,7 +85,7 @@ public class DataBase {
         }
         return true;
     }
-    
+
     boolean cargarDetalleFijo() {
         ArrayList<String> contenidoArchivo = leerArchivo(Directorio + "\\DetalleFijo.txt");
         for (String linea : contenidoArchivo) {
@@ -83,11 +96,16 @@ public class DataBase {
         return true;
     }
 
+    public boolean actualizarPeriodo() {
+        escribirArchivo(Directorio + "\\Periodo.txt", Periodo);
+        return true;
+    }
+    
     public boolean actualizarEmpleado() {
         escribirArchivo(Directorio + "\\Empleado.txt", Empleado);
         return true;
     }
-    
+
     public boolean actualizarEmpresa() {
         escribirArchivo(Directorio + "\\Empresa.txt", Empresa);
         return true;
@@ -97,12 +115,12 @@ public class DataBase {
         escribirArchivo(Directorio + "\\Detalle.txt", Detalle);
         return true;
     }
-    
+
     public boolean actualizarDetalleFijo() {
         escribirArchivo(Directorio + "\\DetalleFijo.txt", DetalleFijo);
         return true;
     }
-    
+
     String concatenarFila(String[] fila) {
         String linea = "";
         for (int i = 0; i < fila.length; i++) {

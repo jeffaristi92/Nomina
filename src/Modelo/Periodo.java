@@ -10,5 +10,9 @@ package Modelo;
  * @author ARISTIZABAL
  */
 public class Periodo {
-    
+
+    public String IdPeriodo;
+    public String FechaInicio;
+    public String FechaFin;
+    public int Dias;
 }

@@ -6,7 +6,10 @@
 package Controlador;
 
 import BD.DataBase;
+import Modelo.Detalle;
 import Modelo.DetallePeriodo;
+import Modelo.Empleado;
+import Modelo.Periodo;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +42,26 @@ public class ControladorDetallePeriodo {
         return lstDetallePeriodos;
     }
 
+    public List<DetallePeriodo> listarDetallePeriodosTipoXEmpleado(Periodo p, Empleado e, String tipoDetalle) {
+        List<DetallePeriodo> lstAllDetallePeriodos = listarDetallePeriodos();
+        List<DetallePeriodo> lstDetallePeriodos = new ArrayList<>();
+        ControladorDetalle controladorDetalle = new ControladorDetalle(baseDatos);
+
+        for (DetallePeriodo dp : lstAllDetallePeriodos) {
+            Detalle d = controladorDetalle.getDetalle(dp.Detalle);
+            boolean booPeriodo = dp.Periodo.equals(p.IdPeriodo);
+            boolean booEmpleado = dp.Empleado.equals(e.Identificacion);
+            boolean booDetalle = d.Tipo.equals(tipoDetalle);
+            if (booPeriodo && booEmpleado &&booDetalle ) {
+                lstDetallePeriodos.add(dp);
+            }
+        }
+
+        return lstDetallePeriodos;
+    }
+
     public boolean insertarDetallePeriodo(DetallePeriodo dp) {
-        baseDatos.DetallePeriodo.add(new String[]{(baseDatos.DetallePeriodo.size()+1)+"",dp.Periodo,dp.Empleado,dp.Detalle,dp.ValorUnitario+"",dp.Cantidad+""});
+        baseDatos.DetallePeriodo.add(new String[]{(baseDatos.DetallePeriodo.size() + 1) + "", dp.Periodo, dp.Empleado, dp.Detalle, dp.ValorUnitario + "", dp.Cantidad + ""});
         baseDatos.actualizarDetallePeriodo();
         return true;
     }

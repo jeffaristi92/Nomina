@@ -35,6 +35,16 @@ public class ControladorDetalle {
 
         return lstDetalles;
     }
+    
+    public Detalle getDetalle(String nombre){
+        List<Detalle> lstDetalles = listarDetalles();
+        for(Detalle e: lstDetalles){
+            if(e.Nombre.equals(nombre)){
+                return e;
+            }
+        }
+        return null;
+    }
 
     public boolean insertarDetalle(Detalle d) {
         baseDatos.Detalle.add(new String[]{d.Nombre,d.Descripcion,d.Tipo});

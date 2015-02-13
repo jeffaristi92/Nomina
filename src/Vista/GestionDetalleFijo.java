@@ -44,7 +44,7 @@ public class GestionDetalleFijo extends javax.swing.JPanel {
     void inicializarEmpleados() {
         lstEmpleado = controladorEmpleado.listarEmpleados();
         for (Empleado e : lstEmpleado) {
-            jcbEmpleado.addItem(e.Nombre +" "+ e.Apellido);
+            jcbEmpleado.addItem(e.Nombre + " " + e.Apellido);
         }
     }
 
@@ -56,36 +56,41 @@ public class GestionDetalleFijo extends javax.swing.JPanel {
     }
 
     void actualizarTabla() {
-        List<DetalleFijo> lstDetallesFijos = controladorDetalleFijo.listarDetallesFijos();
-        DefaultTableModel modelo = (DefaultTableModel) jtbDetalleFijo.getModel();
+        if (lstEmpleado != null && lstEmpleado.size() > 0) {
+            Empleado e = lstEmpleado.get(jcbEmpleado.getSelectedIndex());
+            List<DetalleFijo> lstDetallesFijos = controladorDetalleFijo.listarDetallesFijos();
+            DefaultTableModel modelo = (DefaultTableModel) jtbDetalleFijo.getModel();
 
-        int nroFIlas = modelo.getRowCount();
-        for (int i = 0; i < nroFIlas; i++) {
-            modelo.removeRow(0);
-        }
-
-        if (lstDetallesFijos.size() > 0) {
-            for (DetalleFijo d : lstDetallesFijos) {
-                Object[] fila;
-                fila = new Object[]{
-                    d.Empleado,
-                    d.Nombre,
-                    d.ValorUnitario
-                };
-                modelo.addRow(fila);
+            int nroFIlas = modelo.getRowCount();
+            for (int i = 0; i < nroFIlas; i++) {
+                modelo.removeRow(0);
             }
+
+            if (lstDetallesFijos.size() > 0) {
+                for (DetalleFijo d : lstDetallesFijos) {
+                    if (d.Empleado.equals(e.Identificacion)) {
+                        Object[] fila;
+                        fila = new Object[]{
+                            d.Empleado,
+                            d.Nombre,
+                            d.ValorUnitario
+                        };
+                        modelo.addRow(fila);
+                    }
+                }
+            }
+            jtbDetalleFijo.setModel(modelo);
         }
-        jtbDetalleFijo.setModel(modelo);
     }
-    
+
     DetalleFijo getDatos() {
         DetalleFijo d = new DetalleFijo();
-        d.Empleado =  lstEmpleado.get(jcbEmpleado.getSelectedIndex()).Identificacion;
+        d.Empleado = lstEmpleado.get(jcbEmpleado.getSelectedIndex()).Identificacion;
         d.Nombre = lstDetalle.get(jcbDetalle.getSelectedIndex()).Nombre;
         d.ValorUnitario = Double.parseDouble(jtfValorUnitario.getText());
         return d;
     }
-    
+
     void limpiarFormulario() {
         jtfValorUnitario.setText("");
     }
@@ -118,6 +123,12 @@ public class GestionDetalleFijo extends javax.swing.JPanel {
         jLabel3.setText("Detalle");
 
         jLabel4.setText("Valor Unitario");
+
+        jcbEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbEmpleadoActionPerformed(evt);
+            }
+        });
 
         jtbDetalleFijo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -206,6 +217,11 @@ public class GestionDetalleFijo extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se pudo registrar Detalle Fijo", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbtRegistrarActionPerformed
+
+    private void jcbEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbEmpleadoActionPerformed
+        // TODO add your handling code here:
+        actualizarTabla();
+    }//GEN-LAST:event_jcbEmpleadoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

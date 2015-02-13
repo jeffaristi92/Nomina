@@ -8,6 +8,8 @@ package Vista;
 import Controlador.ControladorPeriodo;
 import Controlador.DataBaseFactory;
 import Modelo.Periodo;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,32 +24,38 @@ public class GestionPeriodo extends javax.swing.JPanel {
      * Creates new form GestionPeriodo
      */
     ControladorPeriodo controladorPeriodo;
-    
+
     public GestionPeriodo(DataBaseFactory f) {
         controladorPeriodo = new ControladorPeriodo(f.getDataBase());
         initComponents();
+        actualizarTabla();
     }
-    
+
     Periodo getDatos() {
         Periodo p = new Periodo();
-        p.FechaInicio = jdcFechaInicio.getDate().toString();
-        p.FechaFin = jdcFechaFin.getDate().toString();
+        Date fechaInicio = jdcFechaInicio.getDate();
+        Date fechaFin = jdcFechaFin.getDate();
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy/MM/dd");
+        p.FechaInicio = formateador.format(fechaInicio);
+        p.FechaFin = formateador.format(fechaFin);
+        //p.FechaInicio = fechaInicio.getYear()+"/"+fechaInicio.getMonth()+"/"+fechaInicio.getDay();
+        //p.FechaFin = fechaFin.getYear()+"/"+fechaFin.getMonth()+"/"+fechaFin.getDay();
         p.Dias = Integer.parseInt(jtfNumeroDias.getText());
         return p;
     }
-    
+
     void actualizarTabla() {
         List<Periodo> lstDetalles = controladorPeriodo.listarPeriodos();
         DefaultTableModel modelo = (DefaultTableModel) jtbPeriodo.getModel();
-        
+
         int nroFIlas = modelo.getRowCount();
         for (int i = 0; i < nroFIlas; i++) {
             modelo.removeRow(0);
         }
-        
+
         if (lstDetalles.size() > 0) {
             for (Periodo p : lstDetalles) {
-                
+
                 Object[] fila;
                 fila = new Object[]{
                     p.FechaInicio,
@@ -59,7 +67,7 @@ public class GestionPeriodo extends javax.swing.JPanel {
         }
         jtbPeriodo.setModel(modelo);
     }
-    
+
     void limpiarFormulario() {
         //jtfNombre.setText("");
         //jtfDescripcion.setText("");

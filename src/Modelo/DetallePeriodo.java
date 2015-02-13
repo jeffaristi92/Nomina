@@ -7,10 +7,13 @@ package Modelo;
 
 /**
  *
- * @author ARISTIZABAL
+ * @author yefguaar
  */
-public class Item {
+public class DetallePeriodo {
+    public String IdDetallePeriodo;
+    public String Periodo;
+    public String Empleado;
     public String Detalle;
+    public double ValorUnitario;
     public int Cantidad;
-    public double Valor;
 }

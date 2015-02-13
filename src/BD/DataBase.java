@@ -24,6 +24,7 @@ public class DataBase {
     public ArrayList<String[]> Detalle;
     public ArrayList<String[]> DetalleFijo;
     public ArrayList<String[]> Periodo;
+    public ArrayList<String[]> DetallePeriodo;
 
     public DataBase(String directorio) {
         Directorio = directorio;
@@ -32,6 +33,7 @@ public class DataBase {
         Detalle = new ArrayList<>();
         DetalleFijo = new ArrayList<>();
         Periodo = new ArrayList<>();
+        DetallePeriodo = new ArrayList<>();
     }
 
     public void cargarDaTaBase() {
@@ -44,6 +46,7 @@ public class DataBase {
         cargarDetalle();
         cargarDetalleFijo();
         cargarPeriodo();
+        cargarDetallePeriodo();
     }
 
     boolean cargarPeriodo() {
@@ -51,6 +54,16 @@ public class DataBase {
         for (String linea : contenidoArchivo) {
             if (!linea.isEmpty()) {
                 Periodo.add(linea.split("\\|"));
+            }
+        }
+        return true;
+    }
+    
+    boolean cargarDetallePeriodo() {
+        ArrayList<String> contenidoArchivo = leerArchivo(Directorio + "\\DetallePeriodo.txt");
+        for (String linea : contenidoArchivo) {
+            if (!linea.isEmpty()) {
+                DetallePeriodo.add(linea.split("\\|"));
             }
         }
         return true;
@@ -98,6 +111,11 @@ public class DataBase {
 
     public boolean actualizarPeriodo() {
         escribirArchivo(Directorio + "\\Periodo.txt", Periodo);
+        return true;
+    }
+
+    public boolean actualizarDetallePeriodo() {
+        escribirArchivo(Directorio + "\\DetallePeriodo.txt", DetallePeriodo);
         return true;
     }
     

@@ -70,23 +70,37 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
         Date fecha = new Date();
         SimpleDateFormat formateador = new SimpleDateFormat("yyyy/MM/dd");
         String periodo = "Nomina: " + p.FechaInicio + " - " + p.FechaFin;
-        List<List<String>> lstDetalles = getDetalles(e, p);
+        double totalDevengado = 0;
+        double totalDeducido = 0;
+        double total = 0;
+
+        List<DetallePeriodo> lstDetallesDevengados = controladorDetallePeriodo.listarDetallePeriodosTipoXEmpleado(p, e, "Devengado");
+        List<DetallePeriodo> lstDetallesDeduccion = controladorDetallePeriodo.listarDetallePeriodosTipoXEmpleado(p, e, "Deduccion");
+        List<List<String>> lstDetalles = getDetalles(lstDetallesDevengados, lstDetallesDeduccion);
         List<String> lstFilas = new ArrayList<>();
 
         for (List<String> detalle : lstDetalles) {
             lstFilas.add(generadorReporte.getFila(detalle));
         }
+
+        for (DetallePeriodo devengado : lstDetallesDevengados) {
+            totalDevengado += devengado.ValorUnitario * devengado.Cantidad;
+        }
+        for (DetallePeriodo deducido : lstDetallesDeduccion) {
+            totalDeducido += deducido.ValorUnitario * deducido.Cantidad;
+        }
+        
+        total = totalDevengado - totalDeducido;
+
         String encabezado = generadorReporte.getEncabezado(controladorEmpresa.getEmpresa(e.Empresa), e, formateador.format(fecha), periodo);
         String detalle = generadorReporte.getDetalle(lstFilas);
-        String comprobante = generadorReporte.getComprobante(encabezado, detalle);
+        String resumen = generadorReporte.getResumen(totalDevengado + "", totalDeducido + "", total);
+        String comprobante = generadorReporte.getComprobante(encabezado, detalle, resumen);
         return comprobante;
     }
 
-    List<List<String>> getDetalles(Empleado e, Periodo p) {
+    List<List<String>> getDetalles(List<DetallePeriodo> lstDetallesDevengados, List<DetallePeriodo> lstDetallesDeduccion) {
         List<List<String>> lstDetalles = new ArrayList<>();
-
-        List<DetallePeriodo> lstDetallesDevengados = controladorDetallePeriodo.listarDetallePeriodosTipoXEmpleado(p, e, "Devengado");
-        List<DetallePeriodo> lstDetallesDeduccion = controladorDetallePeriodo.listarDetallePeriodosTipoXEmpleado(p, e, "Deduccion");
 
         int nroDetalles = (lstDetallesDeduccion.size() > lstDetallesDevengados.size()) ? lstDetallesDeduccion.size() : lstDetallesDevengados.size();
 
@@ -95,7 +109,7 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
             if (i < lstDetallesDevengados.size()) {
                 detalle.add(lstDetallesDevengados.get(i).Detalle);
                 detalle.add(lstDetallesDevengados.get(i).Cantidad + "");
-                detalle.add((lstDetallesDevengados.get(i).ValorUnitario * lstDetallesDevengados.get(i).Cantidad) + "");
+                detalle.add("$ "+(lstDetallesDevengados.get(i).ValorUnitario * lstDetallesDevengados.get(i).Cantidad) + "");
             } else {
                 detalle.add("");
                 detalle.add("");
@@ -104,7 +118,7 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
             if (i < lstDetallesDeduccion.size()) {
                 detalle.add(lstDetallesDeduccion.get(i).Detalle);
                 detalle.add(lstDetallesDeduccion.get(i).Cantidad + "");
-                detalle.add((lstDetallesDeduccion.get(i).ValorUnitario * lstDetallesDeduccion.get(i).Cantidad) + "");
+                detalle.add("$ "+(lstDetallesDeduccion.get(i).ValorUnitario * lstDetallesDeduccion.get(i).Cantidad) + "");
             } else {
                 detalle.add("");
                 detalle.add("");
@@ -203,6 +217,7 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
         String comprobante = getComprobante(e, p);
         List<String> lstComprobantes = new ArrayList<>();
         lstComprobantes.add(comprobante);
+        lstComprobantes.add(comprobante);
         String reporte = generadorReporte.getReporte(lstComprobantes);
         Util.save(reporte);
     }//GEN-LAST:event_jbtGenerarIndividualActionPerformed
@@ -213,6 +228,7 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
         List<String> lstComprobantes = new ArrayList<>();
         for (Empleado e : lstEmpleado) {
             String comprobante = getComprobante(e, p);
+            lstComprobantes.add(comprobante);
             lstComprobantes.add(comprobante);
         }
         String reporte = generadorReporte.getReporte(lstComprobantes);

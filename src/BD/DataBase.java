@@ -6,10 +6,16 @@
 package BD;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 
 /**
@@ -58,7 +64,7 @@ public class DataBase {
         }
         return true;
     }
-    
+
     boolean cargarDetallePeriodo() {
         ArrayList<String> contenidoArchivo = leerArchivo(Directorio + "\\DetallePeriodo.txt");
         for (String linea : contenidoArchivo) {
@@ -118,7 +124,7 @@ public class DataBase {
         escribirArchivo(Directorio + "\\DetallePeriodo.txt", DetallePeriodo);
         return true;
     }
-    
+
     public boolean actualizarEmpleado() {
         escribirArchivo(Directorio + "\\Empleado.txt", Empleado);
         return true;
@@ -152,15 +158,41 @@ public class DataBase {
     }
 
     boolean escribirArchivo(String rutaArchivo, ArrayList<String[]> contenidoArchivo) {
-        FileWriter fichero = null;
-        PrintWriter pw = null;
-        try {
-            fichero = new FileWriter(rutaArchivo);
-            pw = new PrintWriter(fichero);
+        /*
+         FileWriter fichero = null;
+         PrintWriter pw = null;
+         try {
+         fichero = new FileWriter(rutaArchivo);
+         pw = new PrintWriter(fichero);
 
-            for (String[] linea : contenidoArchivo) {
-                pw.println(concatenarFila(linea));
-            }
+         for (String[] linea : contenidoArchivo) {
+         pw.println(concatenarFila(linea));
+         }
+
+         } catch (Exception e) {
+         e.printStackTrace();
+         } finally {
+         try {
+         // Nuevamente aprovechamos el finally para 
+         // asegurarnos que se cierra el fichero.
+         if (null != fichero) {
+         fichero.close();
+         }
+         } catch (Exception e2) {
+         e2.printStackTrace();
+         }
+         }
+         */
+        Writer write = null;
+
+        String strContenidoArchivo = "";
+        for (String[] linea : contenidoArchivo) {
+            strContenidoArchivo = strContenidoArchivo + concatenarFila(linea) + "\n";
+        }
+        try {
+            write = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(rutaArchivo), "UTF8"));
+            write.write(strContenidoArchivo);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,8 +200,8 @@ public class DataBase {
             try {
                 // Nuevamente aprovechamos el finally para 
                 // asegurarnos que se cierra el fichero.
-                if (null != fichero) {
-                    fichero.close();
+                if (null != write) {
+                    write.close();
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();
@@ -190,13 +222,12 @@ public class DataBase {
             // Apertura del fichero y creacion de BufferedReader para poder
             // hacer una lectura comoda (disponer del metodo readLine()).
             archivo = new File(rutaArchivo);
-
             if (!archivo.exists()) {
                 archivo.createNewFile();
             }
 
             fr = new FileReader(archivo);
-            br = new BufferedReader(fr);
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(rutaArchivo), "UTF8"));
 
             // Lectura del fichero
             String linea;

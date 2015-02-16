@@ -36,10 +36,14 @@ public class ControladorEmpresa {
     public Empresa getEmpresa(String nit) {
         List<Empresa> lstEmpresas = listarEmpresas();
         for (Empresa e : lstEmpresas) {
-            if (e.Nit.equals(nit)) {
+            boolean booNit = e.Nit.equalsIgnoreCase(nit);
+            if (booNit) {
                 return e;
             }
         }
-        return null;
+        if(lstEmpresas.size()>0){
+            return lstEmpresas.get(0);
+        }
+        return new Empresa();
     }
 }

@@ -49,10 +49,13 @@ public class ControladorDetallePeriodo {
 
         for (DetallePeriodo dp : lstAllDetallePeriodos) {
             Detalle d = controladorDetalle.getDetalle(dp.Detalle);
+            if (d == null) {
+                continue;
+            }
             boolean booPeriodo = dp.Periodo.equals(p.IdPeriodo);
             boolean booEmpleado = dp.Empleado.equals(e.Identificacion);
             boolean booDetalle = d.Tipo.equals(tipoDetalle);
-            if (booPeriodo && booEmpleado &&booDetalle ) {
+            if (booPeriodo && booEmpleado && booDetalle) {
                 lstDetallePeriodos.add(dp);
             }
         }

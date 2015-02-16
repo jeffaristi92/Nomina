@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import nomina.Util;
 
 /**
  *
@@ -139,6 +140,38 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
             jtbDetallePeriodo.setModel(modelo);
         }
     }
+    
+    void actualizarValorUnitarioDetalle(){
+        double valorTotal = 0;
+        if(!jtfValorTotalDetalle.getText().isEmpty()){
+            valorTotal = Double.parseDouble(jtfValorTotalDetalle.getText());
+        }
+        int cantidad = 1;
+        
+        if(!jtfCantidadDetalle.getText().isEmpty()){
+            cantidad = Integer.parseInt(jtfCantidadDetalle.getText());
+        }
+        
+        double valorUnitario = Math.floor(valorTotal/cantidad);
+        
+        jtfValorUnitarioDetalle.setText(valorUnitario+"");
+    }
+    
+    void actualizarValorUnitarioDetalleFijo(){
+        double valorTotal = 0;
+        if(!jtfValorTotalDetalleFijo.getText().isEmpty()){
+            valorTotal = Double.parseDouble(jtfValorTotalDetalleFijo.getText());
+        }
+        int cantidad = 1;
+        
+        if(!jtfCantidadDetalleFijo.getText().isEmpty()){
+            cantidad = Integer.parseInt(jtfCantidadDetalleFijo.getText());
+        }
+        
+        double valorUnitario = Math.floor(valorTotal/cantidad);
+        
+        jtfValorUnitarioDetalleFijo.setText(valorUnitario+"");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -170,6 +203,10 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
         jtfCantidadDetalleFijo = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jbtAgregarDetalleFijo = new javax.swing.JButton();
+        jtfValorTotalDetalle = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jtfValorTotalDetalleFijo = new javax.swing.JTextField();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Gestion Detalle Periodo");
@@ -222,6 +259,18 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
 
         jLabel7.setText("Cantidad");
 
+        jtfCantidadDetalle.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfCantidadDetalleKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfCantidadDetalleKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfCantidadDetalleKeyTyped(evt);
+            }
+        });
+
         jbtAgregarDetalle.setText("Registrar");
         jbtAgregarDetalle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,6 +279,18 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
         });
 
         jLabel8.setText("Valor Unitario");
+
+        jtfCantidadDetalleFijo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfCantidadDetalleFijoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfCantidadDetalleFijoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfCantidadDetalleFijoKeyTyped(evt);
+            }
+        });
 
         jLabel9.setText("Cantidad");
 
@@ -240,6 +301,34 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
             }
         });
 
+        jtfValorTotalDetalle.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfValorTotalDetalleKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfValorTotalDetalleKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfValorTotalDetalleKeyTyped(evt);
+            }
+        });
+
+        jLabel10.setText("Valor Total");
+
+        jLabel11.setText("Valor Total");
+
+        jtfValorTotalDetalleFijo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfValorTotalDetalleFijoKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtfValorTotalDetalleFijoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfValorTotalDetalleFijoKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,45 +336,52 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jcbDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jcbDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jcbPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(47, 47, 47)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel8)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtfValorUnitarioDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel9)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtfCantidadDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtfValorUnitarioDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel7)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtfCantidadDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jbtAgregarDetalle, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jbtAgregarDetalleFijo, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfValorTotalDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfValorTotalDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtfValorUnitarioDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtfCantidadDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                                .addComponent(jbtAgregarDetalle))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtfValorUnitarioDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtfCantidadDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbtAgregarDetalleFijo))))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -304,27 +400,29 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(jbtAgregarDetalle)
-                            .addComponent(jtfCantidadDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)
-                            .addComponent(jtfValorUnitarioDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
+                        .addGap(41, 41, 41)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(jcbDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jbtAgregarDetalleFijo)
-                            .addComponent(jtfCantidadDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
+                            .addComponent(jtfValorTotalDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel8)
                             .addComponent(jtfValorUnitarioDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(21, 21, 21)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addComponent(jtfCantidadDetalleFijo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jbtAgregarDetalleFijo)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jcbDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)))
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel10)
+                        .addComponent(jtfValorTotalDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel6)
+                        .addComponent(jtfValorUnitarioDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)
+                        .addComponent(jtfCantidadDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jbtAgregarDetalle)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -373,9 +471,83 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbtAgregarDetalleFijoActionPerformed
 
+    private void jtfValorTotalDetalleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfValorTotalDetalleKeyTyped
+        // TODO add your handling code here:
+        if (!Util.validarCampoNumerico(evt, false, jtfValorTotalDetalle.getText())) {
+            evt.consume();
+        }
+        actualizarValorUnitarioDetalle();
+    }//GEN-LAST:event_jtfValorTotalDetalleKeyTyped
+
+    private void jtfValorTotalDetalleKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfValorTotalDetalleKeyPressed
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalle();
+    }//GEN-LAST:event_jtfValorTotalDetalleKeyPressed
+
+    private void jtfValorTotalDetalleFijoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfValorTotalDetalleFijoKeyPressed
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalleFijo();
+    }//GEN-LAST:event_jtfValorTotalDetalleFijoKeyPressed
+
+    private void jtfCantidadDetalleKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadDetalleKeyPressed
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalle();
+    }//GEN-LAST:event_jtfCantidadDetalleKeyPressed
+
+    private void jtfCantidadDetalleFijoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadDetalleFijoKeyPressed
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalleFijo();
+    }//GEN-LAST:event_jtfCantidadDetalleFijoKeyPressed
+
+    private void jtfCantidadDetalleKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadDetalleKeyTyped
+        // TODO add your handling code here:
+        if (!Util.validarCampoNumerico(evt, false, jtfCantidadDetalle.getText())) {
+            evt.consume();
+        }
+        actualizarValorUnitarioDetalle();
+    }//GEN-LAST:event_jtfCantidadDetalleKeyTyped
+
+    private void jtfValorTotalDetalleFijoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfValorTotalDetalleFijoKeyTyped
+        // TODO add your handling code here:
+        if (!Util.validarCampoNumerico(evt, false, jtfValorTotalDetalleFijo.getText())) {
+            evt.consume();
+        }
+        actualizarValorUnitarioDetalleFijo();
+    }//GEN-LAST:event_jtfValorTotalDetalleFijoKeyTyped
+
+    private void jtfCantidadDetalleFijoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadDetalleFijoKeyTyped
+        // TODO add your handling code here:
+        if (!Util.validarCampoNumerico(evt, false, jtfCantidadDetalleFijo.getText())) {
+            evt.consume();
+        }
+        actualizarValorUnitarioDetalleFijo();
+    }//GEN-LAST:event_jtfCantidadDetalleFijoKeyTyped
+
+    private void jtfValorTotalDetalleKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfValorTotalDetalleKeyReleased
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalle();
+    }//GEN-LAST:event_jtfValorTotalDetalleKeyReleased
+
+    private void jtfCantidadDetalleKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadDetalleKeyReleased
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalle();
+    }//GEN-LAST:event_jtfCantidadDetalleKeyReleased
+
+    private void jtfValorTotalDetalleFijoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfValorTotalDetalleFijoKeyReleased
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalleFijo();
+    }//GEN-LAST:event_jtfValorTotalDetalleFijoKeyReleased
+
+    private void jtfCantidadDetalleFijoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCantidadDetalleFijoKeyReleased
+        // TODO add your handling code here:
+        actualizarValorUnitarioDetalleFijo();
+    }//GEN-LAST:event_jtfCantidadDetalleFijoKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -394,6 +566,8 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
     private javax.swing.JTable jtbDetallePeriodo;
     private javax.swing.JTextField jtfCantidadDetalle;
     private javax.swing.JTextField jtfCantidadDetalleFijo;
+    private javax.swing.JTextField jtfValorTotalDetalle;
+    private javax.swing.JTextField jtfValorTotalDetalleFijo;
     private javax.swing.JTextField jtfValorUnitarioDetalle;
     private javax.swing.JTextField jtfValorUnitarioDetalleFijo;
     // End of variables declaration//GEN-END:variables

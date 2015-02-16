@@ -12,4 +12,9 @@ package Modelo;
 public class Empresa {
     public String Nit;
     public String Nombre;
+
+    public Empresa() {
+        Nit="";
+        Nombre="";
+    }
 }

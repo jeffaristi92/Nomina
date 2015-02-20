@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JFileChooser;
-import nomina.Util;
+import Transversal.Util;
 
 /**
  *

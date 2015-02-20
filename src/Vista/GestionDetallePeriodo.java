@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import nomina.Util;
+import Transversal.Util;
 
 /**
  *
@@ -152,7 +152,7 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
             cantidad = Integer.parseInt(jtfCantidadDetalle.getText());
         }
         
-        double valorUnitario = Math.floor(valorTotal/cantidad);
+        double valorUnitario = Util.completarPesos(Math.floor(valorTotal/cantidad));
         
         jtfValorUnitarioDetalle.setText(valorUnitario+"");
     }
@@ -168,7 +168,7 @@ public class GestionDetallePeriodo extends javax.swing.JPanel {
             cantidad = Integer.parseInt(jtfCantidadDetalleFijo.getText());
         }
         
-        double valorUnitario = Math.floor(valorTotal/cantidad);
+        double valorUnitario = Util.completarPesos(Math.floor(valorTotal/cantidad));
         
         jtfValorUnitarioDetalleFijo.setText(valorUnitario+"");
     }

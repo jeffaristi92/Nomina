@@ -8,7 +8,7 @@ package Reportes;
 import Modelo.Empleado;
 import Modelo.Empresa;
 import java.util.List;
-import nomina.Util;
+import Transversal.Util;
 
 /**
  *

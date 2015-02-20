@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package nomina;
+package Transversal;
 
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
@@ -23,6 +23,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author yefguaar
  */
 public class Util {
+
+    public static double completarPesos(double monto) {
+        double centavos = monto % 100;
+        double montoFinal = monto + (100 - centavos);
+        return montoFinal;
+    }
 
     public static boolean escribirArchivo(String rutaArchivo, String contenidoArchivo) {
         FileWriter fichero = null;

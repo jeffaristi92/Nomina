@@ -14,13 +14,10 @@ import Modelo.DetallePeriodo;
 import Modelo.Empleado;
 import Modelo.Periodo;
 import Reportes.GeneradorReporte;
-import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.JFileChooser;
 import Transversal.Util;
 
 /**
@@ -94,7 +91,7 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
 
         String encabezado = generadorReporte.getEncabezado(controladorEmpresa.getEmpresa(e.Empresa), e, formateador.format(fecha), periodo);
         String detalle = generadorReporte.getDetalle(lstFilas);
-        String resumen = generadorReporte.getResumen(totalDevengado + "", totalDeducido + "", total);
+        String resumen = generadorReporte.getResumen(Util.getFormatoMoneda(totalDevengado), Util.getFormatoMoneda(totalDeducido), total);
         String comprobante = generadorReporte.getComprobante(encabezado, detalle, resumen);
         return comprobante;
     }
@@ -109,7 +106,7 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
             if (i < lstDetallesDevengados.size()) {
                 detalle.add(lstDetallesDevengados.get(i).Detalle);
                 detalle.add(lstDetallesDevengados.get(i).Cantidad + "");
-                detalle.add("$ "+(lstDetallesDevengados.get(i).ValorUnitario * lstDetallesDevengados.get(i).Cantidad) + "");
+                detalle.add(Util.getFormatoMoneda((lstDetallesDevengados.get(i).ValorUnitario * lstDetallesDevengados.get(i).Cantidad)));
             } else {
                 detalle.add("");
                 detalle.add("");
@@ -118,7 +115,7 @@ public class GestionReporteComprobante extends javax.swing.JPanel {
             if (i < lstDetallesDeduccion.size()) {
                 detalle.add(lstDetallesDeduccion.get(i).Detalle);
                 detalle.add(lstDetallesDeduccion.get(i).Cantidad + "");
-                detalle.add("$ "+(lstDetallesDeduccion.get(i).ValorUnitario * lstDetallesDeduccion.get(i).Cantidad) + "");
+                detalle.add(Util.getFormatoMoneda((lstDetallesDeduccion.get(i).ValorUnitario * lstDetallesDeduccion.get(i).Cantidad)));
             } else {
                 detalle.add("");
                 detalle.add("");

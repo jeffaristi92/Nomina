@@ -24,6 +24,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Util {
 
+    public static String getFormatoMoneda(double valor) {
+        DecimalFormat formato = new DecimalFormat("$ ###,###.###");
+        return formato.format(valor);
+    }
+    
     public static double completarPesos(double monto) {
         double centavos = monto % 100;
         double montoFinal = monto + (100 - centavos);
